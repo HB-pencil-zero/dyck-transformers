@@ -8,7 +8,8 @@ import torch.nn as nn
 from tqdm import tqdm
 import math
 
-import utils
+from utils import *
+from layers import *
 from transformers import GPT2Config, GPT2LMHeadModel
 
 MAX_LEN = 6000
@@ -32,7 +33,7 @@ class PytorchTransformerModel(nn.Module):
     self.e_type = args['lm']['embedding_type']
     config = GPT2Config(n_embd=hidden_size, n_layer=num_layers, n_inner=hidden_size, attn_pdrop=P_DROP, embd_pdrop=P_DROP, resid_pdrop=P_DROP, vocab_size=self.vocab_size, n_head=self.n_heads, n_positions=MAX_LEN, n_ctx=MAX_LEN)
     print(config)
-    self.model = GPT2LMHeadModel(config)
+    self.model = myTransformer(config)
     print(self.model)
     self.device = args['device'] 
     self.model.to(self.device)
@@ -83,7 +84,7 @@ class PytorchTransformerModel(nn.Module):
                recurrent state vectors for each token in input.
     """
     if self.e_type == 'default' or self.e_type == 'cos':
-        return self.model.forward(batch).values()
+        return self.model.forward(batch)
     else:
         vec1 = self.embedding(batch)
         pos = torch.ones(batch.size(), device=self.device).cumsum(-1) - 1

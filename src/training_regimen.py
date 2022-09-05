@@ -2,6 +2,7 @@
 """
 import sys
 import math
+import time
 
 import torch
 import torch.nn as nn
@@ -25,6 +26,7 @@ def train(args, lm, train_batches, dev_batches, dataset=None):
   lm_params_path = utils.get_lm_path_of_args(args)
   print(lm_params_path)
   optimizer = optim.Adam(lm.parameters(), args['training']['learning_rate'])
+  
   scheduler_patience = 0
   max_epochs = args['training']['max_epochs']
   scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=0.5,patience=scheduler_patience)
@@ -43,7 +45,7 @@ def train(args, lm, train_batches, dev_batches, dataset=None):
       train_batch_count+= 1
       lm.train()
       batch_size, seq_len = label_batch.size()
-      logits, _ = lm(observation_batch)
+      logits = lm(observation_batch)
       logits = logits.view(batch_size*seq_len, -1)
       label_batch = label_batch.view(batch_size*seq_len)
       batch_loss = loss(logits, label_batch)
@@ -52,6 +54,7 @@ def train(args, lm, train_batches, dev_batches, dataset=None):
       epoch_train_loss += batch_loss.detach().cpu().numpy()
       optimizer.zero_grad()
       total_gradient_steps += 1
+
       # Determine whether it's time to evaluate on dev data
       if total_gradient_steps % steps_between_evals == 0 and total_gradient_steps > 1:
         dev_batch_count = 0
@@ -61,7 +64,7 @@ def train(args, lm, train_batches, dev_batches, dataset=None):
           optimizer.zero_grad()
           lm.eval()
           batch_size, seq_len = label_batch.size()
-          logits, _ = lm(observation_batch)
+          logits = lm(observation_batch)
           logits = logits.view(batch_size*seq_len, -1)
           label_batch = label_batch.view(batch_size*seq_len)
           batch_loss = loss(logits, label_batch)

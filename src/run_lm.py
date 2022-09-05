@@ -24,7 +24,7 @@ if __name__ == '__main__':
   argp = ArgumentParser()
   argp.add_argument('config')
   args = argp.parse_args()
-  args = yaml.load(open(args.config))
+  args = yaml.full_load(open(args.config))
   args['training']['learning_rate'] = float(args['training']['learning_rate'])
   # args['name'] = "k{}_m{}_tr{}_nlayer{}_pe".format(args['language']['bracket_types'], args['language']['train_max_stack_depth'], args['language']['train_sample_count'], args['lm']['num_layers'])
   args['name'] = "dyck_lr{}_k{}_m{}_nlayer{}_nhidden{}_{}".format(

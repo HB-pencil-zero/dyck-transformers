@@ -1,0 +1,51 @@
+Getting dataset from data/k8_m10_tr2000000.train
+Getting dataset from data/k8_m10_tr2000000.dev
+Getting dataset from data/k8_m10_tr2000000.test
+Getting dataset from data/k8_m20_tr2000000.test
+<utils.Config object at 0x7f0ba1aa0250>
+myTransformer(
+  (transformer): Transformer(
+    (wte): Embedding(18, 30)
+    (wpe): Embedding(6000, 30)
+    (drop): Dropout(p=0, inplace=False)
+    (h): ModuleList(
+      (0): encoderBlock(
+        (ln1): LayerNorm((30,), eps=1e-05, elementwise_affine=True)
+        (attnBlock): attnBlock(
+          (c_attn): Conv1D()
+          (attn_drop): Dropout(p=0, inplace=False)
+          (res_drop): Dropout(p=0, inplace=False)
+          (c_proj): Conv1D()
+        )
+        (ln2): LayerNorm((30,), eps=1e-05, elementwise_affine=True)
+        (mlp): MLP(
+          (c_fc): Conv1D()
+          (c_proj): Conv1D()
+          (act): NewGELUActivation()
+          (dropout): Dropout(p=0, inplace=False)
+        )
+      )
+      (1): encoderBlock(
+        (ln1): LayerNorm((30,), eps=1e-05, elementwise_affine=True)
+        (attnBlock): attnBlock(
+          (c_attn): Conv1D()
+          (attn_drop): Dropout(p=0, inplace=False)
+          (res_drop): Dropout(p=0, inplace=False)
+          (c_proj): Conv1D()
+        )
+        (ln2): LayerNorm((30,), eps=1e-05, elementwise_affine=True)
+        (mlp): MLP(
+          (c_fc): Conv1D()
+          (c_proj): Conv1D()
+          (act): NewGELUActivation()
+          (dropout): Dropout(p=0, inplace=False)
+        )
+      )
+    )
+    (ln_f): LayerNorm((30,), eps=1e-05, elementwise_affine=True)
+  )
+  (mlp): Linear(in_features=30, out_features=18, bias=False)
+)
+Constructing a GPT2 pytorch model w hidden size 30, layers 2, dropout 0.0
+Writing results to .
+Problem at: /home/huangbei/pre-ln/dyck-transformer/src/run_lm.py 53 <module>

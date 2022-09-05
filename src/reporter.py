@@ -117,7 +117,7 @@ def get_dyck_eval_dict(args, lm, dataset, dev_batches, split_name):
   vocab = dataset.vocab
   inv_vocab = list(sorted(vocab, key = lambda x: vocab[x]))
   for observation_batch, label_batch, length_batch in tqdm(dev_batches, desc='[dev batch]'):
-    logit_batch, _ = lm(observation_batch)
+    logit_batch = lm(observation_batch)
     batch_index = 0
     for batch_index, (observation, label, logit) in enumerate(zip(observation_batch, label_batch, logit_batch)):
       state_vec = []
@@ -239,7 +239,7 @@ def report_image_examples(args, lm, dataset, split_name):
   index = 0
   inv_vocab = {v: k for k,v in vocab.items()}
   for batch, label_batch, length_batch in dataloader:
-    logits, _ = lm(batch)
+    logits = lm(batch)
     for offset_index in range(logits.size()[0]):
       prob_data = logits[offset_index, 0:length_batch[offset_index],:]
       prob_data = prob_data.view(-1,*prob_data.size()).detach().cpu().numpy()
